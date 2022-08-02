@@ -175,9 +175,30 @@ module.exports = {
   getLaporanTOday: async (req, res) => {
     try {
       const result = await laporanAktivitasModel.getDataLaporanToday()
-
-      if (result.length > 0) {
-        return helper.response(res, 200, 'Succes Get User Data', result)
+      const datakosong = []
+      result.forEach((item) => {
+        if (item.logaktivitas_isi === null) {
+          const setData = {
+            user_name: item.user_name,
+            user_nip: item.user_nip,
+            user_pangkat: item.user_pangkat,
+            logaktivitas_isi: 'Belum mengisi data hari ini',
+            logaktivitas_created_at: item.logaktivitas_created_at
+          }
+          datakosong.push(setData)
+        } else if (item.logaktivitas_isi !== null) {
+          const setData = {
+            user_name: item.user_name,
+            user_nip: item.user_nip,
+            user_pangkat: item.user_pangkat,
+            logaktivitas_isi: item.logaktivitas_isi,
+            logaktivitas_created_at: item.logaktivitas_created_at
+          }
+          datakosong.push(setData)
+        }
+      })
+      if (datakosong.length > 0) {
+        return helper.response(res, 200, 'Succes Get User Data', datakosong)
       } else {
         return helper.response(res, 404, 'Data not Found', null)
       }
