@@ -4,7 +4,7 @@ module.exports = {
   getDataAllLaporanAktivitas: () => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT u.user_nip, u.user_name, l.logaktivitas_id, l.logaktivitas_isi, l.logaktivitas_created_at FROM logaktivitas l JOIN user u ON l.logaktivitas_user_id = u.id',
+        'SELECT u.user_nip, u.user_name, u.user_phone_number ,l.logaktivitas_id, l.logaktivitas_isi, l.logaktivitas_created_at FROM logaktivitas l JOIN user u ON l.logaktivitas_user_id = u.id',
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
         }
@@ -38,11 +38,13 @@ module.exports = {
       )
     })
   },
-  getDataLaporanAktivitasByIdUser: (id) => {
+  getDataLaporanAktivitasByIdUser: (id, sort, limit, offset) => {
     return new Promise((resolve, reject) => {
+      const sqlquery = `SELECT u.user_nip, u.user_name,u.user_pangkat,u.user_phone_number ,l.logaktivitas_id, l.logaktivitas_isi, l.logaktivitas_created_at FROM logaktivitas l JOIN user u ON l.logaktivitas_user_id = u.id WHERE u.id = ${id} ORDER BY ${sort}  LIMIT ${limit} OFFSET ${offset}`
+      console.log('cccsqlquery', sqlquery);
+
       connection.query(
-        'SELECT u.user_nip, u.user_name, l.logaktivitas_id, l.logaktivitas_isi, l.logaktivitas_created_at FROM logaktivitas l JOIN user u ON l.logaktivitas_user_id = u.id WHERE u.id = ?',
-        id,
+        sqlquery,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
         }
@@ -111,12 +113,26 @@ module.exports = {
       )
     })
   },
-  getDataLaporanToday: () => {
+  getDataLaporanToday: (limit, offset, sortCol, sort, keywords) => {
     return new Promise((resolve, reject) => {
+      const sqlquery = `SELECT user.user_name,user.user_nip,user.user_phone_number, user_pangkat, logaktivitas.logaktivitas_isi, logaktivitas.logaktivitas_created_at FROM logaktivitas RIGHT JOIN user ON user.id = logaktivitas.logaktivitas_user_id AND DATE(logaktivitas.logaktivitas_created_at) = CURDATE() WHERE user.${sortCol} LIKE '${keywords}' ORDER BY ${sort} LIMIT ${limit} OFFSET ${offset}`
       connection.query(
-        'SELECT user.user_name,user.user_nip, user_pangkat, logaktivitas.logaktivitas_isi, logaktivitas.logaktivitas_created_at FROM logaktivitas RIGHT JOIN user ON user.id = logaktivitas.logaktivitas_user_id AND DATE(logaktivitas.logaktivitas_created_at) = CURDATE()',
+        sqlquery,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
+  getDataLaporanTodayTotal: (sortCol, keywords) => {
+    return new Promise((resolve, reject) => {
+      const sqlquery = `SELECT COUNT(*) AS total FROM logaktivitas RIGHT JOIN user ON user.id = logaktivitas.logaktivitas_user_id AND DATE(logaktivitas.logaktivitas_created_at) = CURDATE() WHERE user.${sortCol} LIKE '${keywords}'`
+      connection.query(
+        sqlquery,
+        keywords,
+        (error, result) => {
+          // console.log(result) isi array dalamnya objek
+          !error ? resolve(result[0].total) : reject(new Error(error))
         }
       )
     })
@@ -128,9 +144,62 @@ module.exports = {
       })
     })
   },
+  getDataCountTotal: (sortCol, keywords) => {
+    return new Promise((resolve, reject) => {
+      const sqlquery = `SELECT COUNT(*) AS total FROM logaktivitas l JOIN user u ON l.logaktivitas_user_id = u.id WHERE u.${sortCol} LIKE '${keywords}'`
+      connection.query(
+        sqlquery,
+        keywords,
+        (error, result) => {
+          // console.log(result) isi array dalamnya objek
+          !error ? resolve(result[0].total) : reject(new Error(error))
+        }
+      )
+    })
+  },
+  getDataCountTotalByUserId: (id, sortby) => {
+    return new Promise((resolve, reject) => {
+      const sqlquery = `SELECT COUNT(*) AS total FROM logaktivitas l JOIN user u ON l.logaktivitas_user_id = u.id WHERE u.id = ${id} ORDER BY '${sortby}'`
+      connection.query(
+        sqlquery,
+        (error, result) => {
+          // console.log(result) isi array dalamnya objek
+          !error ? resolve(result[0].total) : reject(new Error(error))
+        }
+      )
+    })
+  },
   getDataCount: (limit, offset, sortCol, sort, keywords) => {
     return new Promise((resolve, reject) => {
-      const sqlquery = `SELECT l.logaktivitas_id, u.user_nip, u.user_name, u.user_pangkat, l.logaktivitas_isi, l.logaktivitas_created_at FROM logaktivitas l JOIN user u ON l.logaktivitas_user_id = u.id WHERE u.${sortCol} LIKE '${keywords}' ORDER BY ${sort} LIMIT ${limit} OFFSET ${offset}`
+      const sqlquery = `SELECT l.logaktivitas_id, u.user_nip,u.user_phone_number, l.logaktivitas_image, u.user_name, u.user_pangkat, l.logaktivitas_isi, l.logaktivitas_created_at FROM logaktivitas l JOIN user u ON l.logaktivitas_user_id = u.id WHERE u.${sortCol} LIKE '${keywords}' ORDER BY ${sort} LIMIT ${limit} OFFSET ${offset}`
+      console.log('dwdwd', sqlquery)
+      connection.query(
+        sqlquery,
+        (error, result) => {
+          // console.log(result) isi array dalamnya objek
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
+  getDataCountTanggalTotal: (fromdate, todate) => {
+    console.log('dwdwdddd', fromdate)
+    return new Promise((resolve, reject) => {
+      const sqlquery = `SELECT l.logaktivitas_id, u.user_nip, u.user_name, u.user_pangkat,u.user_phone_number, l.logaktivitas_isi, l.logaktivitas_created_at FROM logaktivitas l JOIN user u ON l.logaktivitas_user_id = u.id WHERE l.logaktivitas_created_at BETWEEN '${fromdate}' AND '${todate}' `
+      console.log('dwdwd', sqlquery)
+      connection.query(
+        sqlquery,
+        (error, result) => {
+          // console.log(result) isi array dalamnya objek
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
+  getDataCountTanggal: (limit, offset, fromdate, todate) => {
+    console.log('dwdwdddd', fromdate)
+    return new Promise((resolve, reject) => {
+      const sqlquery = `SELECT l.logaktivitas_id, u.user_nip, u.user_name, u.user_pangkat,u.user_phone_number, l.logaktivitas_isi, l.logaktivitas_created_at FROM logaktivitas l JOIN user u ON l.logaktivitas_user_id = u.id WHERE l.logaktivitas_created_at BETWEEN '${fromdate}' AND '${todate}' LIMIT ${limit} OFFSET ${offset}`
       console.log('dwdwd', sqlquery)
       connection.query(
         sqlquery,

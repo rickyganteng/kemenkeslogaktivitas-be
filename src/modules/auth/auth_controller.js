@@ -7,7 +7,6 @@ module.exports = {
   register: async (req, res) => {
     // console.log('huhuhu', req)
     // console.log('huhuhu', req)
-    console.log('wqw', req.body);
 
     try {
       // console.log(req.body)

@@ -65,10 +65,11 @@ module.exports = {
       )
     })
   },
-  getDataAllTanpaFill: () => {
+  getDataAllTanpaFill: (limit, offset, sortCol, sort, keywords) => {
     return new Promise((resolve, reject) => {
+      const sqlquery = `SELECT * FROM user WHERE ${sortCol} LIKE '${keywords}' ORDER BY ${sort} LIMIT ${limit} OFFSET ${offset}`
       connection.query(
-        'SELECT * FROM user',
+        sqlquery,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
         }
@@ -80,6 +81,19 @@ module.exports = {
       connection.query('SELECT * FROM user WHERE ?', data, (error, result) => {
         !error ? resolve(result) : reject(new Error(error))
       })
+    })
+  },
+  getDataCount: (sortCol, keywords) => {
+    return new Promise((resolve, reject) => {
+      const sqlquery = `SELECT COUNT(*) AS total FROM user WHERE ${sortCol} LIKE '${keywords}'`
+      connection.query(
+        sqlquery,
+        keywords,
+        (error, result) => {
+          // console.log(result) isi array dalamnya objek
+          !error ? resolve(result[0].total) : reject(new Error(error))
+        }
+      )
     })
   },
   deleteData: (id) => {

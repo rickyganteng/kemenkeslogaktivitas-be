@@ -46,10 +46,26 @@ module.exports = {
   },
   getAllUserTanpaFill: async (req, res) => {
     try {
-      const result = await userModel.getDataAllTanpaFill()
-      return helper.response(res, 200, 'Succes Get User Data', result)
+      let { page, limit, sort, sortCol, keywords } = req.query
+      limit = limit || '5'
+      page = page || '1'
+      keywords = keywords || '%%'
+      sortCol = sortCol || 'user_name'
+      sort = sort || 'user_name DESC'
+
+      page = parseInt(page)
+      limit = parseInt(limit)
+      const offset = page * limit - limit
+      const totalData = await userModel.getDataCount(sortCol, keywords)
+      const result = await userModel.getDataAllTanpaFill(limit, offset, sortCol, sort, keywords)
+
+      const totalPage = Math.ceil(totalData / limit)
+      const pageInfo = { page, totalPage, limit, totalData }
+
+      return helper.response(res, 200, 'Succes Get User Data hehe', result, pageInfo)
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
+      // console.log(error);
     }
   },
   register: async (req, res) => {
@@ -173,7 +189,8 @@ module.exports = {
         )
       }
     } catch (error) {
-      return helper.response(res, 400, 'Bad Request', error)
+      // return helper.response(res, 400, 'Bad Request', error)
+      console.log(error);
     }
   },
   deletedUSer: async (req, res) => {
@@ -224,6 +241,7 @@ module.exports = {
     try {
       const { id } = req.params
       let result = await userModel.getDataById(id)
+
       if (result.length > 0) {
         const {
           userNama,
@@ -234,9 +252,12 @@ module.exports = {
           userEmail,
           userPasswordRegis
         } = req.body
+        console.log('de', result[0].user_password)
         console.log('de', userPasswordRegis)
         console.log('de', userNIP)
-        console.log('de', result[0].user_password)
+        const salt = bcrypt.genSaltSync(10)
+        const encryptPassword = bcrypt.hashSync(userPasswordRegis, salt)
+        console.log('crypt pass', encryptPassword)
         const setData = {
           user_nip: userNIP,
           user_name: userNama,
@@ -244,13 +265,9 @@ module.exports = {
           user_unit_kerja: userUnitKerja,
           user_email: userEmail,
           user_phone_number: usernoHP,
-          user_password: userPasswordRegis === undefined ? result[0].user_password : userPasswordRegis,
+          user_password: userPasswordRegis === undefined ? result[0].user_password : encryptPassword,
           user_updated_at: new Date(Date.now())
-          // image_ruangan: req.file ? req.file.filename : result[0].image_ruangan,
         }
-        // console.log('UPDATE DATA', req.body)
-        // console.log(setData)
-        // console.log('MOVIE IMAGE DB', result[0].movie_image.length)
 
         result = await userModel.updateData(setData, id)
         return helper.response(res, 200, 'Succes Update Data', result)
@@ -263,7 +280,8 @@ module.exports = {
         )
       }
     } catch (error) {
-      return helper.response(res, 400, 'Bad Request', error)
+      // return helper.response(res, 400, 'Bad Request', error)
+      console.log(error);
     }
   }
 }

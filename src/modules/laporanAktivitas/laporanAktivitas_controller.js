@@ -4,24 +4,90 @@ const laporanAktivitasModel = require('./laporanAktivitas_model')
 module.exports = {
   getAllLaporanAktivitas: async (req, res) => {
     try {
+      let { page, limit, sort, sortCol, keywords, fromdate, todate } = req.query
+      limit = limit || '10'
+      page = page || '1'
+      keywords = keywords || '%%'
+      sortCol = sortCol || 'user_name'
+      sort = sort || 'logaktivitas_created_at DESC'
+      fromdate = fromdate || ''
+      todate = todate || ''
+
+      page = parseInt(page)
+      limit = parseInt(limit)
+      const offset = page * limit - limit
+      if (fromdate === '' && todate === '') {
+        const totalData = await laporanAktivitasModel.getDataCount(limit, offset, sortCol, sort, keywords)
+        // let hehe = parseInt(totalData.length)
+        const totalDataTotal = await laporanAktivitasModel.getDataCountTotal(sortCol, keywords)
+        const totalPage = Math.ceil(totalDataTotal / limit)
+        const pageInfo = { page, totalPage, limit, totalData }
+        // const result = await laporanAktivitasModel.getDataAllLaporanAktivitas(limit, offset, keywords, sort)
+        return helper.response(res, 200, 'Succes Get User Data', totalData, pageInfo)
+      } else {
+        const totalData = await laporanAktivitasModel.getDataCountTanggal(limit, offset, fromdate, todate)
+        const totalDataLength = parseInt(totalData.length)
+        console.log('gege', totalData.length)
+        console.log('gege', offset)
+        const totalDataTotal = await laporanAktivitasModel.getDataCountTanggalTotal(fromdate, todate)
+
+        const totalPage = Math.ceil(totalDataTotal.length / limit)
+        const pageInfo = { page, totalPage, limit, totalDataLength }
+        // const result = await laporanAktivitasModel.getDataAllLaporanAktivitas(limit, offset, keywords, sort)
+        return helper.response(res, 200, 'Succes Get User Data', totalData, pageInfo)
+      }
+    } catch (error) {
+      return helper.response(res, 400, 'Bad Request', error)
+      // console.log(error);
+    }
+  },
+  getLaporanTOday: async (req, res) => {
+    try {
       let { page, limit, sort, sortCol, keywords } = req.query
       limit = limit || '10'
       page = page || '1'
       keywords = keywords || '%%'
       sortCol = sortCol || 'user_name'
-      sort = sort || 'user_name ASC'
+      sort = sort || 'user_name DESC'
 
       page = parseInt(page)
       limit = parseInt(limit)
       const offset = page * limit - limit
-      const totalData = await laporanAktivitasModel.getDataCount(limit, offset, sortCol, sort, keywords)
-      // let hehe = parseInt(totalData.length)
-      const totalPage = Math.ceil(totalData.length / limit)
+      const totalData = await laporanAktivitasModel.getDataLaporanTodayTotal(sortCol, keywords)
+      const result = await laporanAktivitasModel.getDataLaporanToday(limit, offset, sortCol, sort, keywords)
+
+      const totalPage = Math.ceil(totalData / limit)
       const pageInfo = { page, totalPage, limit, totalData }
-      // const result = await laporanAktivitasModel.getDataAllLaporanAktivitas(limit, offset, keywords, sort)
-      return helper.response(res, 200, 'Succes Get User Data', totalData, pageInfo)
+      const datakosong = []
+      result.forEach((item) => {
+        if (item.logaktivitas_isi === null) {
+          const setData = {
+            user_name: item.user_name,
+            user_nip: item.user_nip,
+            user_pangkat: item.user_pangkat,
+            logaktivitas_isi: 'Belum mengisi data hari ini',
+            logaktivitas_created_at: item.logaktivitas_created_at
+          }
+          datakosong.push(setData)
+        } else if (item.logaktivitas_isi !== null) {
+          const setData = {
+            user_name: item.user_name,
+            user_nip: item.user_nip,
+            user_pangkat: item.user_pangkat,
+            logaktivitas_isi: item.logaktivitas_isi,
+            logaktivitas_created_at: item.logaktivitas_created_at
+          }
+          datakosong.push(setData)
+        }
+      })
+      if (datakosong.length > 0) {
+        return helper.response(res, 200, 'Succes Get User Data', datakosong, pageInfo)
+      } else {
+        return helper.response(res, 404, 'Data not Found', null)
+      }
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
+      // console.log(error);
     }
   },
   getByIdLaporanAktivitas: async (req, res) => {
@@ -41,17 +107,31 @@ module.exports = {
   },
   getLaporanAktivitasByIdUser: async (req, res) => {
     try {
-      const { id } = req.params
-      const result = await laporanAktivitasModel.getDataLaporanAktivitasByIdUser(id)
+      console.log('queryquery', req.query);
 
+      let { page, limit, sort } = req.query
+      limit = limit || '10'
+      page = page || '1'
+      sort = sort || 'logaktivitas_created_at DESC'
+
+      page = parseInt(page)
+      limit = parseInt(limit)
+      const offset = page * limit - limit
+      const { id } = req.params
+      sort = sort || 'logaktivitas_created_at DESC'
+      const result = await laporanAktivitasModel.getDataLaporanAktivitasByIdUser(id, sort, limit, offset)
+      const totalDataTotal = await laporanAktivitasModel.getDataCountTotalByUserId(id, sort)
+      console.log('total data user', totalDataTotal);
+      const totalPage = Math.ceil(totalDataTotal / limit)
+      const pageInfo = { page, totalPage, limit, totalDataTotal }
       if (result.length > 0) {
-        return helper.response(res, 200, 'Succes Get User Data', result)
+        return helper.response(res, 200, 'Succes Get User Data hehe', result, pageInfo)
       } else {
         return helper.response(res, 404, `Data By Id ${id} not Found`, null)
       }
     } catch (error) {
-      return helper.response(res, 400, 'Bad Request', error)
-      // console.log(error);
+      // return helper.response(res, 400, 'Bad Request', error)
+      console.log(error);
     }
   },
   postLaporanAktivitas: async (req, res) => {
@@ -64,7 +144,8 @@ module.exports = {
       } = req.body
       const setData = {
         logaktivitas_user_id: namaLengkap,
-        logaktivitas_isi: isiAktivitas
+        logaktivitas_isi: isiAktivitas,
+        logaktivitas_image: req.file ? req.file.filename : ''
       }
       console.log('POST DATA', setData)
       const checkLog = await laporanAktivitasModel.getDataCondition({
@@ -164,41 +245,6 @@ module.exports = {
 
       if (result.length > 0) {
         return helper.response(res, 200, 'Succes Get User Data', result)
-      } else {
-        return helper.response(res, 404, 'Data not Found', null)
-      }
-    } catch (error) {
-      return helper.response(res, 400, 'Bad Request', error)
-      // console.log(error);
-    }
-  },
-  getLaporanTOday: async (req, res) => {
-    try {
-      const result = await laporanAktivitasModel.getDataLaporanToday()
-      const datakosong = []
-      result.forEach((item) => {
-        if (item.logaktivitas_isi === null) {
-          const setData = {
-            user_name: item.user_name,
-            user_nip: item.user_nip,
-            user_pangkat: item.user_pangkat,
-            logaktivitas_isi: 'Belum mengisi data hari ini',
-            logaktivitas_created_at: item.logaktivitas_created_at
-          }
-          datakosong.push(setData)
-        } else if (item.logaktivitas_isi !== null) {
-          const setData = {
-            user_name: item.user_name,
-            user_nip: item.user_nip,
-            user_pangkat: item.user_pangkat,
-            logaktivitas_isi: item.logaktivitas_isi,
-            logaktivitas_created_at: item.logaktivitas_created_at
-          }
-          datakosong.push(setData)
-        }
-      })
-      if (datakosong.length > 0) {
-        return helper.response(res, 200, 'Succes Get User Data', datakosong)
       } else {
         return helper.response(res, 404, 'Data not Found', null)
       }

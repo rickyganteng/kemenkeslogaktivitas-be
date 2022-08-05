@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 })
 
 const fileFilter = (req, file, callback) => {
-  const listExt = ['.jpg', '.png', '.jpeg', '.pdf']
+  const listExt = ['.jpg', '.png', '.jpeg', '.pdf', '.docx', '.xlsx']
   const ext = path.extname(file.originalname).toLowerCase()
   if (listExt.includes(ext)) {
     callback(null, true)
@@ -26,7 +26,7 @@ const fileFilter = (req, file, callback) => {
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
-  limits: { fileSize: 3072 * 3072 }
+  limits: { fileSize: 10100 * 10100 }
 }).single('image')
 
 const uploadFilter = (req, res, next) => {

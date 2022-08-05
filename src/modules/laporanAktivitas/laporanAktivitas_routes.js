@@ -19,7 +19,6 @@ Route.post(
 Route.patch(
   '/:id',
   authMiddleware.authentication,
-  authMiddleware.isAdmin,
   uploadFile,
   userController.updateLaporanAktivitas
 )

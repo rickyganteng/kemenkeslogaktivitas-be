@@ -12,10 +12,6 @@ module.exports = {
     })
   },
   getUserData: (userId, limit, offset, keywords, sort) => {
-    console.log('qq', limit);
-    console.log('ololo', userId);
-    console.log(offset);
-    console.log(keywords);
     console.log(sort)
     return new Promise((resolve, reject) => {
       connection.query(
