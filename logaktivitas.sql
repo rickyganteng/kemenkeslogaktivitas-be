@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 01 Jul 2022 pada 11.15
+-- Generation Time: 05 Agu 2022 pada 05.07
 -- Versi Server: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `mokit`
+-- Database: `logaktivitas`
 --
 
 -- --------------------------------------------------------
@@ -53,8 +53,7 @@ CREATE TABLE `booking_ruangan` (
 
 INSERT INTO `booking_ruangan` (`id`, `id_peminjam`, `booking_ruangan_nama`, `booking_ruangan_nip`, `booking_ruangan_unitkerja`, `booking_ruangan_tanggal`, `booking_ruangan_nohp`, `booking_ruangan_direktorat`, `booking_ruangan_email`, `booking_ruangan_penaggung_jawab`, `booking_ruangan_keterangan_kegiatan_acara`, `booking_ruangan_ruangan`, `booking_ruangan_waktu_penggunaan_awal`, `booking_ruangan_waktu_penggunaan_akhir`, `booking_ruang_rapat_hadir_oleh`, `booking_ruangan_surat_dinas`, `booking_ruangan_created_at`, `booking_ruangan_updated_at`) VALUES
 (40, '62', 'Bambang', '12345', 'Tu. Dirjen', '1667260800000', '0852', 'Sekertariat P2P', 'test08@gmail.com', 'bambang', 'rapat besar', 'Direktor P2PTM 1', '08:00:00', '12:00:00', '', '', '2022-06-05 16:00:27', ''),
-(42, '62', 'Bambang', '12345', 'Tu. Dirjen', '1667260800000', '0852', 'Sekertariat P2P', 'test08@gmail.com', 'bambang', 'rapat besar', 'Direktor P2PTM 1', '08:00:00', '12:00:00', '', '', '2022-06-05 16:00:27', ''),
-(69, '44', 'qwqw', '12', 'Subag Adum P2PM', '1657756800000', '0129', 'P2PM', 'g@gmail.com', 'asss', 'zxcv', 'Ruang Rapat 503 ', '08:00:00', '09:56:00', '', '2022-06-14T02-54-23.773Z26658de1-a2df-4946-968e-a8f2a75cc83a.jpg', '2022-06-14 02:54:34', '');
+(42, '62', 'Bambang', '12345', 'Tu. Dirjen', '1667260800000', '0852', 'Sekertariat P2P', 'test08@gmail.com', 'bambang', 'rapat besar', 'Direktor P2PTM 1', '08:00:00', '12:00:00', '', '', '2022-06-05 16:00:27', '');
 
 -- --------------------------------------------------------
 
@@ -90,7 +89,6 @@ INSERT INTO `fasilitas_ruangan` (`fasilitas_ruangan_id`, `id_r`, `nama_barang`, 
 (13, 2, 'dewer', 11, 'oo'),
 (14, 2, 'dqwe', 11, 'oo'),
 (15, 34, 'saya', 100, 'bagus banget'),
-(16, 18, 'ac ', 1, 'baik'),
 (17, 11, 'mic meja', 29, 'bagus'),
 (18, 11, 'mic stand', 3, 'baik'),
 (19, 11, 'video tron', 1, 'baik'),
@@ -182,7 +180,46 @@ INSERT INTO `laporan_ruangan` (`id`, `id_peminjam`, `booking_ruangan_nama`, `boo
 (126, '44', 'fety erlina', '123456789', 'Tu. Dirjen', '1655856000000', '0857382', 'Sekertariat P2P', 'w@gmail.com', 'adum', 'rapat bersama', 'Direktorat P2PM ', '13:00:00', '15:40:00', 'eslon 1, eslon 2, eslon 3', 'Selesai', '2022-06-22T08-34-20.364Z26658de1-a2df-4946-968e-a8f2a75cc83a.jpg', '2022-06-22 08:54:27', ''),
 (127, '44', 'fety erlina', '123456789', 'Tu. Dirjen', '1655856000000', '0857382', 'Sekertariat P2P', 'w@gmail.com', 'adum', 'rapat bersama', 'Direktorat P2PM ', '13:00:00', '15:40:00', 'eslon 1, eslon 2, eslon 3', 'Selesai', '2022-06-22T08-34-20.364Z26658de1-a2df-4946-968e-a8f2a75cc83a.jpg', '2022-06-22 08:54:27', ''),
 (128, '44', 'fety erlina', '111110990908', 'Gangguan Indra Dan Funsional', '1656115200000', '000087986899', 'P2PTM', 'fetyfety2@gmail.com', 'asmi ', 'penegahan mata minus pada ana usia dini', 'Direktorat P2PM ', '11:00:00', '15:00:00', '', 'Selesai', '2022-06-10T05-32-45.378Z16f5ffb7-6943-4ae1-8016-77d375f4e709.jpg', '2022-06-27 02:33:58', ''),
-(129, '44', 'coba', '0871', 'Tu. Dirjen', '1656460800000', '1829', 'Sekertariat P2P', 'w@gmail.com', 'cobaa', 'rapat', 'Ruang Rapat 503 ', '08:00:00', '09:00:00', 'eslon 3', 'Selesai', '2022-06-29T01-57-40.723Zlaporan.pdf', '2022-06-29 01:59:01', '');
+(129, '44', 'coba', '0871', 'Tu. Dirjen', '1656460800000', '1829', 'Sekertariat P2P', 'w@gmail.com', 'cobaa', 'rapat', 'Ruang Rapat 503 ', '08:00:00', '09:00:00', 'eslon 3', 'Selesai', '2022-06-29T01-57-40.723Zlaporan.pdf', '2022-06-29 01:59:01', ''),
+(130, '44', 'qwqw', '12', 'Subag Adum P2PM', '1657756800000', '0129', 'P2PM', 'g@gmail.com', 'asss', 'zxcv', 'Ruang Rapat 503 ', '08:00:00', '09:56:00', '', 'Selesai', '2022-06-14T02-54-23.773Z26658de1-a2df-4946-968e-a8f2a75cc83a.jpg', '2022-07-19 06:11:19', ''),
+(131, '44', 'qwqw', '12', 'Subag Adum P2PM', '1657756800000', '0129', 'P2PM', 'g@gmail.com', 'asss', 'zxcv', 'Ruang Rapat 503 ', '08:00:00', '09:56:00', '', 'Selesai', '2022-06-14T02-54-23.773Z26658de1-a2df-4946-968e-a8f2a75cc83a.jpg', '2022-07-19 06:11:19', ''),
+(133, '76', 'testmember', '012345', 'Projek Management Office (PMO)', '30059510400000', '089577', 'Sekertariat P2P', 'w@gmail.com', 'testmember', 'testmember', 'Percetakan Negara no29', '08:00:00', '11:50:00', 'testmember', 'Selesai', '2022-07-20T04-47-12.824Zphoto1627302596.pdf', '2022-07-20 05:13:32', ''),
+(134, '76', 'edi pranoto', '01234', 'Tu. Dirjen', '1658707200000', '085123456', 'Sekertariat P2P', 'edipranoto@gmail.com', 'ade riski', 'pertemuan ', 'RUANGAN  503', '08:00:00', '16:00:00', 'eslon 2, eslon3', 'Selesai', '2022-07-21T08-52-12.092Zphoto1627302596.jpeg', '2022-07-21 08:54:59', '');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `logaktivitas`
+--
+
+CREATE TABLE `logaktivitas` (
+  `logaktivitas_id` int(11) NOT NULL,
+  `logaktivitas_user_id` int(11) NOT NULL,
+  `logaktivitas_isi` text NOT NULL,
+  `logaktivitas_image` varchar(150) NOT NULL,
+  `logaktivitas_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `logaktivitas_updated_at` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `logaktivitas`
+--
+
+INSERT INTO `logaktivitas` (`logaktivitas_id`, `logaktivitas_user_id`, `logaktivitas_isi`, `logaktivitas_image`, `logaktivitas_created_at`, `logaktivitas_updated_at`) VALUES
+(1, 75, 'mengerjakan project website', '', '2022-07-27 14:02:06', ''),
+(2, 75, 'bagusn', '', '2022-07-27 16:19:56', '2022-07-31 16:41:45.415'),
+(5, 44, 'swdwq hehddkdn ji', '', '2022-07-28 04:38:02', '2022-07-29 09:13:19.496'),
+(7, 44, 'swdwq hehddkdn jihkkhk', '', '2022-07-31 04:38:02', '2022-07-29 09:13:19.496'),
+(10, 76, 'halo semua', '', '2022-07-31 09:22:36', '2022-08-03 13:17:25.884'),
+(11, 75, 'coba', '', '2022-07-31 09:24:01', ''),
+(12, 62, 'hehehe', '', '2022-07-31 09:25:26', ''),
+(15, 76, 'guyu heheguyu heheguyu heheguyu heheguyu heheguyu heheguyu hehe', '', '2022-08-03 06:08:41', '2022-08-05 02:07:20.467'),
+(16, 62, 'dadads', '', '2022-08-03 07:14:11', '2022-08-03 17:40:52.788'),
+(18, 76, 'ayo absne edit', '', '2022-08-04 03:11:35', '2022-08-04 10:21:18.283'),
+(19, 44, 'ehuehue', '', '2022-08-04 04:24:12', ''),
+(20, 67, 'ehuehue', '2022-08-04T04-25-26.824Z46d195c2-879e-45bf-aeda-7230a78b3dbf.jpg', '2022-08-04 04:25:26', ''),
+(23, 78, 'heheheh', '2022-08-04T06-31-34.092ZNew Microsoft Word Document.docx', '2022-08-04 06:31:34', ''),
+(24, 76, 'tambah', '', '2022-08-05 01:47:36', '');
 
 -- --------------------------------------------------------
 
@@ -223,9 +260,9 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `user_role` enum('basic','admin') NOT NULL,
   `user_verification` enum('pending','succes') NOT NULL,
+  `user_nip` varchar(100) NOT NULL,
   `user_name` varchar(150) NOT NULL,
-  `user_username` varchar(150) NOT NULL,
-  `user_team_kerja` varchar(30) NOT NULL,
+  `user_pangkat` varchar(100) NOT NULL,
   `user_unit_kerja` varchar(100) NOT NULL,
   `user_email` varchar(150) NOT NULL,
   `user_phone_number` varchar(13) NOT NULL,
@@ -239,20 +276,21 @@ CREATE TABLE `user` (
 -- Dumping data untuk tabel `user`
 --
 
-INSERT INTO `user` (`id`, `user_role`, `user_verification`, `user_name`, `user_username`, `user_team_kerja`, `user_unit_kerja`, `user_email`, `user_phone_number`, `user_password`, `user_profile_image`, `user_created_at`, `user_updated_at`) VALUES
-(44, 'admin', 'succes', 'Ricky Syahputra', 'cahgagah', '', '', 'asd@gmail.com', '123', '$2b$10$9x9CbVg8QV.B9yCQRQ.ZNOwSTMROtiLKx82rfKwidQEHm7CjDbbYS', '2021-08-11T11-01-30.220ZEllipse 11.png', '2021-07-04 11:36:53', NULL),
-(62, 'basic', 'succes', 'dada', 'dada', '123123', 'kemenkes', 'abc@gmail.com', '08512763', '$2b$10$gFzvl51N2YRIbHI49vBVN.JsK9j.j1Xt9fqBI6uMMGy7rT8X8LU2O', NULL, '2022-05-20 04:35:04', NULL),
-(63, 'basic', 'succes', 'fety erlina', '', '3421234', 'Subag Adum PL', 'test07@gmail.com', '08977', '$2b$10$FuCh3/XKHyu7SEq29l5/jO0G7Bmn52VjtfC7/IZRT9hs2Foyec3ZO', NULL, '2022-05-22 13:26:09', NULL),
-(65, 'basic', 'succes', 'Bambang sabirin', '', '123456', 'Kangker dan Kelainan Darah', 'test09@gmail.com', '4321', '$2b$10$NOVJwqzsI2/Y72yBDaX4lejA5d.iRFaWCFhgW.8h7Ok2FWa61Bomq', '2021-08-09T07-56-53.893Z2021-07-27T03-55-16.969ZEllipse 11.png', '2021-07-04 10:46:34', '2022-05-22 15:00:40'),
-(66, 'admin', 'succes', 'aripiansyah', '', '342485', 'Tu. Dirjen', 'test08@gmail.com', '08573281', '$2b$10$9x9CbVg8QV.B9yCQRQ.ZNOwSTMROtiLKx82rfKwidQEHm7CjDbbYS', '2021-08-11T11-01-30.220ZEllipse 11.png', '2021-07-04 11:36:53', NULL),
-(67, 'basic', 'succes', 'ricky syahputra', '', '748374', 'Sekertariat P2P (Program dan Informasi)', 'g@gmail.com', '08932847', '$2b$10$g364seEZr5dEkk5JApy2EuuYouvfvPp3iokpR4nd6kRsptxBKapni', '', '2021-07-07 07:53:11', '2022-05-22 15:03:05'),
-(68, 'admin', 'succes', 'fety', '', '1234', 'Sekertariat P2P (Program dan Informasi)', 'fety@gmail.com', '085263512', '$2b$10$YfZGfU/pnjR.IHd2.ebEb.MHvKXZD73bZTwRb6cJeJow0E4AMtvDS', NULL, '2022-06-21 01:43:28', NULL),
-(69, 'admin', 'succes', 'qw', '', '123', 'Sekertariat P2P (Program dan Informasi)', 'www@gmail.com', '0874', '$2b$10$A6iHZiEeKGzz6Dt/gVZyYOmaKm5eg2PKC2f/pdX3DMUngeW4xhL2W', NULL, '2022-06-29 02:52:19', NULL),
-(70, 'admin', 'succes', 'jajal', 'jajal', '123', 'Sekertariat P2P (Program dan Informasi)', 'dhfj@gmail.com', '0897', '$2b$10$oZw/FKr.wIYIPfrQ5RbmUO/t5gx6EmQEV0lwxDhIfVTFuZKZDXan2', NULL, '2022-06-29 07:58:03', NULL),
-(71, 'admin', 'succes', 'lplpl', 'lplp', 'portport', 'Sekertariat P2P (Program dan Informasi)', 'qwepo@gmail.com', '02128', '$2b$10$ZqQin.8//tmdL5C6u5qjweQu3WMsHeBitif3HM02w.i3mGz02wpyO', NULL, '2022-06-29 08:29:03', NULL),
-(72, 'admin', 'succes', 'lplpl', 'lplp', 'portport', 'Sekertariat P2P (Program dan Informasi)', 'qwepo@gmail.com', '02128', '$2b$10$N3NKoCYfa4QsF4okrsqDluqH4suT8G1M5iTDBH7PZDgzey9IDZWw6', NULL, '2022-06-29 08:29:03', NULL),
-(73, 'admin', 'succes', 'qwe', 'jajal', 'qwer', 'Sekertariat P2P (Program dan Informasi)', 'ii2@gmail.com', '123', '$2b$10$JvWV0g.Ta.tcXfaGYkvPresPyhVYC3IZ0ajqu2/1WxN3T1bh51zny', NULL, '2022-06-29 08:34:24', NULL),
-(74, 'admin', 'succes', 'qq', 'jajal', 'qw', 'Sekertariat P2P (Program dan Informasi)', 'qw@gmail.com', '12', '$2b$10$.x99xLqLLUT5ektEEEtADeHzDg0GYYsBFctY6j0DpHB75CzPAByny', NULL, '2022-06-29 08:35:47', NULL);
+INSERT INTO `user` (`id`, `user_role`, `user_verification`, `user_nip`, `user_name`, `user_pangkat`, `user_unit_kerja`, `user_email`, `user_phone_number`, `user_password`, `user_profile_image`, `user_created_at`, `user_updated_at`) VALUES
+(44, 'admin', 'succes', '0789', 'Ricky Syahputra', 'IV A', 'P2P', 'asd@gmail.com', '123', '$2b$10$9x9CbVg8QV.B9yCQRQ.ZNOwSTMROtiLKx82rfKwidQEHm7CjDbbYS', '2021-08-11T11-01-30.220ZEllipse 11.png', '2021-07-04 11:36:53', '2022-07-29 02:13:45'),
+(62, 'basic', 'succes', '12121212', 'dada', '', 'kemenkes', 'abc@gmail.com', '08512763', '$2b$10$gFzvl51N2YRIbHI49vBVN.JsK9j.j1Xt9fqBI6uMMGy7rT8X8LU2O', NULL, '2022-05-20 04:35:04', '2022-08-01 14:12:46'),
+(63, 'basic', 'succes', '2', 'fety erlina', '', 'Subag Adum PL', 'test07@gmail.com', '08977', '$2b$10$FuCh3/XKHyu7SEq29l5/jO0G7Bmn52VjtfC7/IZRT9hs2Foyec3ZO', NULL, '2022-05-22 13:26:09', NULL),
+(65, 'basic', 'succes', '3', 'Bambang sabirin', '', 'Kangker dan Kelainan Darah', 'test09@gmail.com', '4321', '$2b$10$NOVJwqzsI2/Y72yBDaX4lejA5d.iRFaWCFhgW.8h7Ok2FWa61Bomq', '2021-08-09T07-56-53.893Z2021-07-27T03-55-16.969ZEllipse 11.png', '2021-07-04 10:46:34', '2022-05-22 15:00:40'),
+(66, 'admin', 'succes', '4', 'aripiansyah', '', 'Tu. Dirjen', 'test08@gmail.com', '08573281', '$2b$10$9x9CbVg8QV.B9yCQRQ.ZNOwSTMROtiLKx82rfKwidQEHm7CjDbbYS', '2021-08-11T11-01-30.220ZEllipse 11.png', '2021-07-04 11:36:53', NULL),
+(67, 'basic', 'succes', '5', 'ricky syahputra', '', 'Sekertariat P2P (Program dan Informasi)', 'g@gmail.com', '08932847', '$2b$10$g364seEZr5dEkk5JApy2EuuYouvfvPp3iokpR4nd6kRsptxBKapni', '', '2021-07-07 07:53:11', '2022-05-22 15:03:05'),
+(68, 'admin', 'succes', '6', 'fety', '', 'Sekertariat P2P (Program dan Informasi)', 'fety@gmail.com', '085263512', '$2b$10$YfZGfU/pnjR.IHd2.ebEb.MHvKXZD73bZTwRb6cJeJow0E4AMtvDS', NULL, '2022-06-21 01:43:28', NULL),
+(70, 'admin', 'succes', '8', 'jajal', '', 'Sekertariat P2P (Program dan Informasi)', 'dhfj@gmail.com', '0897', '$2b$10$oZw/FKr.wIYIPfrQ5RbmUO/t5gx6EmQEV0lwxDhIfVTFuZKZDXan2', NULL, '2022-06-29 07:58:03', NULL),
+(72, 'admin', 'succes', '10', 'lplpl', '', 'Sekertariat P2P (Program dan Informasi)', 'qwepo@gmail.com', '02128', '$2b$10$N3NKoCYfa4QsF4okrsqDluqH4suT8G1M5iTDBH7PZDgzey9IDZWw6', NULL, '2022-06-29 08:29:03', NULL),
+(74, 'admin', 'succes', '12', 'qq', '', 'Sekertariat P2P (Program dan Informasi)', 'qw@gmail.com', '12', '$2b$10$.x99xLqLLUT5ektEEEtADeHzDg0GYYsBFctY6j0DpHB75CzPAByny', NULL, '2022-06-29 08:35:47', NULL),
+(75, 'admin', 'succes', '32128399849238794', 'testadmin', '', 'Sekertariat P2P (Program dan Informasi)', 'testadmin@gmail.com', '08123456789', '$2b$10$QgwTwmzjkHP3jX2zNGgywuogjX5OkgGT25iqJCO0cXi1qcRCyYRwS', NULL, '2022-07-19 06:45:08', '2022-07-19 06:49:02'),
+(76, 'basic', 'succes', '32849587918373', 'testmember', 'IV B', 'Sekertariat P2P (Program dan Informasi)', 'testmember@gmail.com', '08123456789', '$2b$10$7sVoBrnb9BiiVUgXQU3oSu.2i2uEgbbxNC4XJ021WjUzeDC08Jw8S', NULL, '2022-07-19 06:46:13', '2022-08-04 19:00:48'),
+(77, 'basic', 'succes', 'll', 'sapa hayi', 'll', 'll', 'll', 'll', '$2b$10$z5EMdoKXSo9eNl4RzKVOLOdfXDF3m5q9OEV2uRew4VlosNjIuw6wm', NULL, '2022-07-28 04:23:37', '2022-08-03 10:33:55'),
+(78, 'basic', 'succes', 'pp', 'pp', 'pp', 'pp', 'pp', 'pp', '$2b$10$0ZxlH/R318r9NLMSMqcF7.BcafZ55D5Ac9YICPzOpu0ZZcWeBPYNG', NULL, '2022-07-28 04:42:00', '2022-08-04 06:25:54');
 
 -- --------------------------------------------------------
 
@@ -287,8 +325,7 @@ CREATE TABLE `waitinglist_ruangan` (
 
 INSERT INTO `waitinglist_ruangan` (`id`, `id_peminjam`, `booking_ruangan_nama`, `booking_ruangan_nip`, `booking_ruangan_unitkerja`, `booking_ruangan_tanggal`, `booking_ruangan_nohp`, `booking_ruangan_direktorat`, `booking_ruangan_email`, `booking_ruangan_penaggung_jawab`, `booking_ruangan_keterangan_kegiatan_acara`, `booking_ruangan_ruangan`, `booking_ruangan_waktu_penggunaan_awal`, `booking_ruangan_waktu_penggunaan_akhir`, `booking_ruang_rapat_hadir_oleh`, `booking_ruangan_surat_dinas`, `booking_ruangan_created_at`, `booking_ruangan_updated_at`) VALUES
 (1, '44', 'q', '1', 'Subag Adum Sekertariat P2P', '1672531200000', '1', 'Sekertariat P2P', 'w@gmail.com', 'd', 'q', 'Ruang Rapat 503 ', '03:00:00', '05:00:00', 'qq', '2022-06-26T22-10-11.832Z26658de1-a2df-4946-968e-a8f2a75cc83a.jpg', '2022-06-26 22:10:11', ''),
-(2, '44', 'qq', '1', 'Kepegawaian dan Umum', '1704067200000', '1', 'Sekertariat P2P', 'w@gmail.com', 'd', 's', 'Ruang Rapat 503 ', '01:00:00', '02:00:00', 'qq', '2022-06-26T22-12-10.901Z26658de1-a2df-4946-968e-a8f2a75cc83a.jpg', '2022-06-26 22:12:11', ''),
-(4, '44', 'nm', '12', 'Tu. Dirjen', '1656460800000', '12', 'Sekertariat P2P', 'w@gmail.com', 'er', 'fg', 'Ruang Rapat 503 ', '08:00:00', '09:05:00', 'eslon 4', '2022-06-29T02-03-18.495Zlaporan.pdf', '2022-06-29 02:03:18', '');
+(2, '44', 'qq', '1', 'Kepegawaian dan Umum', '1704067200000', '1', 'Sekertariat P2P', 'w@gmail.com', 'd', 's', 'Ruang Rapat 503 ', '01:00:00', '02:00:00', 'qq', '2022-06-26T22-12-10.901Z26658de1-a2df-4946-968e-a8f2a75cc83a.jpg', '2022-06-26 22:12:11', '');
 
 --
 -- Indexes for dumped tables
@@ -311,6 +348,12 @@ ALTER TABLE `fasilitas_ruangan`
 --
 ALTER TABLE `laporan_ruangan`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `logaktivitas`
+--
+ALTER TABLE `logaktivitas`
+  ADD PRIMARY KEY (`logaktivitas_id`);
 
 --
 -- Indexes for table `ruangan`
@@ -338,7 +381,7 @@ ALTER TABLE `waitinglist_ruangan`
 -- AUTO_INCREMENT for table `booking_ruangan`
 --
 ALTER TABLE `booking_ruangan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT for table `fasilitas_ruangan`
 --
@@ -348,7 +391,12 @@ ALTER TABLE `fasilitas_ruangan`
 -- AUTO_INCREMENT for table `laporan_ruangan`
 --
 ALTER TABLE `laporan_ruangan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
+--
+-- AUTO_INCREMENT for table `logaktivitas`
+--
+ALTER TABLE `logaktivitas`
+  MODIFY `logaktivitas_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `ruangan`
 --
@@ -358,12 +406,12 @@ ALTER TABLE `ruangan`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 --
 -- AUTO_INCREMENT for table `waitinglist_ruangan`
 --
 ALTER TABLE `waitinglist_ruangan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
