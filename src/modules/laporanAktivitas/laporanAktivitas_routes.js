@@ -16,6 +16,12 @@ Route.post(
   uploadFile,
   userController.postLaporanAktivitas
 )
+Route.get(
+  '/cronjob/okey',
+  // authMiddleware.authentication,
+  uploadFile,
+  userController.postLaporanAktivitasIfBlank
+)
 Route.patch(
   '/:id',
   authMiddleware.authentication,

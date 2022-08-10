@@ -5,10 +5,12 @@ const helmet = require('helmet')
 const compression = require('compression')
 const bodyParser = require('body-parser')
 const routerNavigation = require('./routes')
+
 require('dotenv').config()
 
 const app = express()
 const port = process.env.PORT
+const scheduledFunctions = require('../src/middleware/cronJob');
 
 app.use(morgan('dev'))
 app.use(cors())
@@ -24,3 +26,6 @@ app.use('/backend1/api', express.static('src/uploads'))
 app.listen(port, () => {
   console.log(`Express app now listen on ${port}`)
 })
+
+// start cronjob
+scheduledFunctions.initScheduledJobs()

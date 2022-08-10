@@ -1,8 +1,10 @@
 const helper = require('../../helpers')
 const laporanAktivitasModel = require('./laporanAktivitas_model')
+
 // ssss
 module.exports = {
   getAllLaporanAktivitas: async (req, res) => {
+    console.log('nyoba noyba');
     try {
       let { page, limit, sort, sortCol, keywords, fromdate, todate } = req.query
       limit = limit || '10'
@@ -18,10 +20,10 @@ module.exports = {
       const offset = page * limit - limit
       if (fromdate === '' && todate === '') {
         const totalData = await laporanAktivitasModel.getDataCount(limit, offset, sortCol, sort, keywords)
-        // let hehe = parseInt(totalData.length)
+        const totalDataNoLimit = await laporanAktivitasModel.getDataCountNoLimit(sortCol, sort, keywords)
         const totalDataTotal = await laporanAktivitasModel.getDataCountTotal(sortCol, keywords)
         const totalPage = Math.ceil(totalDataTotal / limit)
-        const pageInfo = { page, totalPage, limit, totalData }
+        const pageInfo = { page, totalPage, limit, totalData, totalDataNoLimit }
         // const result = await laporanAktivitasModel.getDataAllLaporanAktivitas(limit, offset, keywords, sort)
         return helper.response(res, 200, 'Succes Get User Data', totalData, pageInfo)
       } else {
@@ -55,9 +57,10 @@ module.exports = {
       const offset = page * limit - limit
       const totalData = await laporanAktivitasModel.getDataLaporanTodayTotal(sortCol, keywords)
       const result = await laporanAktivitasModel.getDataLaporanToday(limit, offset, sortCol, sort, keywords)
+      const resultTodayNoLimit = await laporanAktivitasModel.getDataLaporanTodayNoLimit(sortCol, sort, keywords)
 
       const totalPage = Math.ceil(totalData / limit)
-      const pageInfo = { page, totalPage, limit, totalData }
+      const pageInfo = { page, totalPage, limit, totalData, resultTodayNoLimit }
       const datakosong = []
       result.forEach((item) => {
         if (item.logaktivitas_isi === null) {
@@ -66,7 +69,8 @@ module.exports = {
             user_nip: item.user_nip,
             user_pangkat: item.user_pangkat,
             logaktivitas_isi: 'Belum mengisi data hari ini',
-            logaktivitas_created_at: item.logaktivitas_created_at
+            logaktivitas_created_at: item.logaktivitas_created_at,
+            logaktivitas_image: item.logaktivitas_image
           }
           datakosong.push(setData)
         } else if (item.logaktivitas_isi !== null) {
@@ -75,7 +79,8 @@ module.exports = {
             user_nip: item.user_nip,
             user_pangkat: item.user_pangkat,
             logaktivitas_isi: item.logaktivitas_isi,
-            logaktivitas_created_at: item.logaktivitas_created_at
+            logaktivitas_created_at: item.logaktivitas_created_at,
+            logaktivitas_image: item.logaktivitas_image
           }
           datakosong.push(setData)
         }
@@ -107,8 +112,6 @@ module.exports = {
   },
   getLaporanAktivitasByIdUser: async (req, res) => {
     try {
-      console.log('queryquery', req.query);
-
       let { page, limit, sort } = req.query
       limit = limit || '10'
       page = page || '1'
@@ -121,7 +124,6 @@ module.exports = {
       sort = sort || 'logaktivitas_created_at DESC'
       const result = await laporanAktivitasModel.getDataLaporanAktivitasByIdUser(id, sort, limit, offset)
       const totalDataTotal = await laporanAktivitasModel.getDataCountTotalByUserId(id, sort)
-      console.log('total data user', totalDataTotal);
       const totalPage = Math.ceil(totalDataTotal / limit)
       const pageInfo = { page, totalPage, limit, totalDataTotal }
       if (result.length > 0) {
@@ -130,9 +132,82 @@ module.exports = {
         return helper.response(res, 404, `Data By Id ${id} not Found`, null)
       }
     } catch (error) {
+      return helper.response(res, 400, 'Bad Request', error)
+      // console.log(error);
+    }
+  },
+  postLaporanAktivitasIfBlank: async (req, res) => {
+    try {
+      const datakosong = []
+      const datakosongById = []
+      let { page, limit, sort, sortCol, keywords } = req.query
+      limit = limit || '10'
+      page = page || '1'
+      keywords = keywords || '%%'
+      sortCol = sortCol || 'user_name'
+      sort = sort || 'user_name DESC'
+
+      page = parseInt(page)
+      limit = parseInt(limit)
+      const offset = page * limit - limit
+      const result = await laporanAktivitasModel.getDataLaporanTodayNoLimit(sortCol, sort, keywords)
+      // console.log('test blank', result);
+      result.forEach((item) => {
+        if (item.logaktivitas_isi === null) {
+          const setData = {
+            logaktivitas_user_id: item.id,
+            logaktivitas_isi: 'Belum mengisi data hari ini',
+            logaktivitas_image: item.logaktivitas_image
+          }
+          datakosong.push(setData)
+          datakosongById.push(setData.logaktivitas_user_id)
+        }
+      })
+      console.log('databarublank', datakosong)
+      console.log('databarublankID', datakosongById.length)
+      for (const e of datakosongById) {
+        const setData2 = {
+          logaktivitas_user_id: e,
+          logaktivitas_isi: '',
+          logaktivitas_image: req.file ? req.file.filename : ''
+        }
+        // const resultlagi = await laporanAktivitasModel.createData(setData2)
+        const result2 = await laporanAktivitasModel.createData(setData2)
+        console.log('datasetdata 2', result2)
+      }
+    } catch (error) {
       // return helper.response(res, 400, 'Bad Request', error)
       console.log(error);
     }
+    // =========================
+    // try {
+    //   // console.log('Controller', req)
+    //   const {
+    //     namaLengkap,
+    //     isiAktivitas
+    //     // ruangBuktiSuratDina
+    //   } = req.body
+    //   const setData = {
+    //     logaktivitas_user_id: namaLengkap,
+    //     logaktivitas_isi: isiAktivitas,
+    //     logaktivitas_image: req.file ? req.file.filename : ''
+    //   }
+    //   console.log('POST DATA', setData)
+    //   const checkLog = await laporanAktivitasModel.getDataCondition({
+    //     logaktivitas_user_id: namaLengkap
+    //   })
+    //   // console.log('checklog', checkLog);
+    //   if (checkLog.length === 0) {
+    //     const result = await laporanAktivitasModel.createData(setData)
+    //     return helper.response(res, 200, 'Succes Create Data', result)
+    //   } else {
+    //     return helper.response(res, 400, 'Anda Sudah Input Aktivitas Hari Ini')
+    //   }
+    // } catch (error) {
+    //   return helper.response(res, 400, 'Bad Request', error)
+    //   // console.log(error);
+    // }
+    // =========================
   },
   postLaporanAktivitas: async (req, res) => {
     try {
@@ -176,7 +251,19 @@ module.exports = {
         const setData = {
           logaktivitas_user_id: result[0].logaktivitas_user_id,
           logaktivitas_isi: isiAktivitas,
+          logaktivitas_image: req.file ? req.file.filename : result[0].logaktivitas_image,
           logaktivitas_updated_at: new Date(Date.now())
+        }
+
+        if (req.file) {
+          console.log('ada file')
+          if (result[0].logaktivitas_image.length > 0) {
+            console.log(`Delete Image${result[0].logaktivitas_image}`)
+            const imgLoc = `src/uploads/${result[0].logaktivitas_image}`
+            helper.deleteImage(imgLoc)
+          } else {
+            console.log('NO img in DB')
+          }
         }
         // console.log('UPDATE DATA', req.body)
         // console.log(setData)
@@ -201,10 +288,10 @@ module.exports = {
       // console.log(req.params)
       const { id } = req.params
       let result = await laporanAktivitasModel.getDataByIdLaporanAktivitasUpdate(id)
-      // console.log(result)
+      console.log('wewewee', result)
 
       if (result.length > 0) {
-        const imgLoc = `src/uploads/${result[0].movie_image}`
+        const imgLoc = `src/uploads/${result[0].logaktivitas_image}`
         helper.deleteImage(imgLoc)
         result = await laporanAktivitasModel.deleteData(id)
         return helper.response(
