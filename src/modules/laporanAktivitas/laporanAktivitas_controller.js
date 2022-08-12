@@ -23,24 +23,26 @@ module.exports = {
         const totalDataNoLimit = await laporanAktivitasModel.getDataCountNoLimit(sortCol, sort, keywords)
         const totalDataTotal = await laporanAktivitasModel.getDataCountTotal(sortCol, keywords)
         const totalPage = Math.ceil(totalDataTotal / limit)
+        console.log('totaldatatotal we', totalDataTotal);
+
         const pageInfo = { page, totalPage, limit, totalData, totalDataNoLimit }
         // const result = await laporanAktivitasModel.getDataAllLaporanAktivitas(limit, offset, keywords, sort)
         return helper.response(res, 200, 'Succes Get User Data', totalData, pageInfo)
       } else {
-        const totalData = await laporanAktivitasModel.getDataCountTanggal(limit, offset, fromdate, todate)
-        const totalDataLength = parseInt(totalData.length)
-        console.log('gege', totalData.length)
-        console.log('gege', offset)
-        const totalDataTotal = await laporanAktivitasModel.getDataCountTanggalTotal(fromdate, todate)
+        const totalData = await laporanAktivitasModel.getDataCountTanggal(limit, offset, fromdate, todate, sortCol, sort, keywords)
+        // const totalDataLength = parseInt(totalData.length)
+        const totalDataNoLimit = await laporanAktivitasModel.getDataCountTanggalNoLimit(sortCol, sort, keywords, fromdate, todate)
+        const totalDataTotal = await laporanAktivitasModel.getDataCountTanggalTotal(fromdate, todate, sortCol, keywords)
 
         const totalPage = Math.ceil(totalDataTotal.length / limit)
-        const pageInfo = { page, totalPage, limit, totalDataLength }
+        console.log('heheheh', totalDataTotal);
+        const pageInfo = { page, totalPage, limit, totalData, totalDataNoLimit }
         // const result = await laporanAktivitasModel.getDataAllLaporanAktivitas(limit, offset, keywords, sort)
         return helper.response(res, 200, 'Succes Get User Data', totalData, pageInfo)
       }
     } catch (error) {
-      return helper.response(res, 400, 'Bad Request', error)
-      // console.log(error);
+      // return helper.response(res, 400, 'Bad Request', error)
+      console.log(error);
     }
   },
   getLaporanTOday: async (req, res) => {
@@ -168,7 +170,7 @@ module.exports = {
       for (const e of datakosongById) {
         const setData2 = {
           logaktivitas_user_id: e,
-          logaktivitas_isi: '',
+          logaktivitas_isi: '--',
           logaktivitas_image: req.file ? req.file.filename : ''
         }
         // const resultlagi = await laporanAktivitasModel.createData(setData2)
