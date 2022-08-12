@@ -10,7 +10,7 @@ require('dotenv').config()
 
 const app = express()
 const port = process.env.PORT
-const scheduledFunctions = require('../src/middleware/cronJob');
+const scheduledFunctions = require('../src/middleware/cronJob')
 
 app.use(morgan('dev'))
 app.use(cors())

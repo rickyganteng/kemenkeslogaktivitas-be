@@ -4,7 +4,6 @@ const laporanAktivitasModel = require('./laporanAktivitas_model')
 // ssss
 module.exports = {
   getAllLaporanAktivitas: async (req, res) => {
-    console.log('nyoba noyba');
     try {
       let { page, limit, sort, sortCol, keywords, fromdate, todate } = req.query
       limit = limit || '10'
@@ -23,7 +22,6 @@ module.exports = {
         const totalDataNoLimit = await laporanAktivitasModel.getDataCountNoLimit(sortCol, sort, keywords)
         const totalDataTotal = await laporanAktivitasModel.getDataCountTotal(sortCol, keywords)
         const totalPage = Math.ceil(totalDataTotal / limit)
-        console.log('totaldatatotal we', totalDataTotal);
 
         const pageInfo = { page, totalPage, limit, totalData, totalDataNoLimit }
         // const result = await laporanAktivitasModel.getDataAllLaporanAktivitas(limit, offset, keywords, sort)
@@ -35,14 +33,13 @@ module.exports = {
         const totalDataTotal = await laporanAktivitasModel.getDataCountTanggalTotal(fromdate, todate, sortCol, keywords)
 
         const totalPage = Math.ceil(totalDataTotal.length / limit)
-        console.log('heheheh', totalDataTotal);
         const pageInfo = { page, totalPage, limit, totalData, totalDataNoLimit }
         // const result = await laporanAktivitasModel.getDataAllLaporanAktivitas(limit, offset, keywords, sort)
         return helper.response(res, 200, 'Succes Get User Data', totalData, pageInfo)
       }
     } catch (error) {
-      // return helper.response(res, 400, 'Bad Request', error)
-      console.log(error);
+      return helper.response(res, 400, 'Bad Request', error)
+      // console.log(error);
     }
   },
   getLaporanTOday: async (req, res) => {
@@ -142,16 +139,11 @@ module.exports = {
     try {
       const datakosong = []
       const datakosongById = []
-      let { page, limit, sort, sortCol, keywords } = req.query
-      limit = limit || '10'
-      page = page || '1'
+      let { sort, sortCol, keywords } = req.query
       keywords = keywords || '%%'
       sortCol = sortCol || 'user_name'
       sort = sort || 'user_name DESC'
 
-      page = parseInt(page)
-      limit = parseInt(limit)
-      const offset = page * limit - limit
       const result = await laporanAktivitasModel.getDataLaporanTodayNoLimit(sortCol, sort, keywords)
       // console.log('test blank', result);
       result.forEach((item) => {
@@ -178,8 +170,8 @@ module.exports = {
         console.log('datasetdata 2', result2)
       }
     } catch (error) {
-      // return helper.response(res, 400, 'Bad Request', error)
-      console.log(error);
+      return helper.response(res, 400, 'Bad Request', error)
+      // console.log(error);
     }
     // =========================
     // try {

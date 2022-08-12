@@ -189,8 +189,8 @@ module.exports = {
         )
       }
     } catch (error) {
-      // return helper.response(res, 400, 'Bad Request', error)
-      console.log(error);
+      return helper.response(res, 400, 'Bad Request', error)
+      // console.log(error);
     }
   },
   deletedUSer: async (req, res) => {
@@ -280,8 +280,8 @@ module.exports = {
         )
       }
     } catch (error) {
-      // return helper.response(res, 400, 'Bad Request', error)
-      console.log(error);
+      return helper.response(res, 400, 'Bad Request', error)
+      // console.log(error);
     }
   }
 }
