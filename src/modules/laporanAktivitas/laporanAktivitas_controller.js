@@ -139,10 +139,10 @@ module.exports = {
     try {
       const datakosong = []
       const datakosongById = []
-      let { sort, sortCol, keywords } = req.query
-      keywords = keywords || '%%'
-      sortCol = sortCol || 'user_name'
-      sort = sort || 'user_name DESC'
+
+      const keywords = '%%'
+      const sortCol = 'user_name'
+      const sort = 'user_name DESC'
 
       const result = await laporanAktivitasModel.getDataLaporanTodayNoLimit(sortCol, sort, keywords)
       // console.log('test blank', result);
@@ -163,45 +163,16 @@ module.exports = {
         const setData2 = {
           logaktivitas_user_id: e,
           logaktivitas_isi: '--',
-          logaktivitas_image: req.file ? req.file.filename : ''
+          logaktivitas_image: ''
         }
         // const resultlagi = await laporanAktivitasModel.createData(setData2)
         const result2 = await laporanAktivitasModel.createData(setData2)
         console.log('datasetdata 2', result2)
       }
     } catch (error) {
-      return helper.response(res, 400, 'Bad Request', error)
-      // console.log(error);
+      // return helper.response(res, 400, 'Bad Request', error)
+      console.log(error);
     }
-    // =========================
-    // try {
-    //   // console.log('Controller', req)
-    //   const {
-    //     namaLengkap,
-    //     isiAktivitas
-    //     // ruangBuktiSuratDina
-    //   } = req.body
-    //   const setData = {
-    //     logaktivitas_user_id: namaLengkap,
-    //     logaktivitas_isi: isiAktivitas,
-    //     logaktivitas_image: req.file ? req.file.filename : ''
-    //   }
-    //   console.log('POST DATA', setData)
-    //   const checkLog = await laporanAktivitasModel.getDataCondition({
-    //     logaktivitas_user_id: namaLengkap
-    //   })
-    //   // console.log('checklog', checkLog);
-    //   if (checkLog.length === 0) {
-    //     const result = await laporanAktivitasModel.createData(setData)
-    //     return helper.response(res, 200, 'Succes Create Data', result)
-    //   } else {
-    //     return helper.response(res, 400, 'Anda Sudah Input Aktivitas Hari Ini')
-    //   }
-    // } catch (error) {
-    //   return helper.response(res, 400, 'Bad Request', error)
-    //   // console.log(error);
-    // }
-    // =========================
   },
   postLaporanAktivitas: async (req, res) => {
     try {
