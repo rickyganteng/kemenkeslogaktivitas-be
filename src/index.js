@@ -5,6 +5,7 @@ const helmet = require('helmet')
 const compression = require('compression')
 const bodyParser = require('body-parser')
 const routerNavigation = require('./routes')
+const path = require('path')
 
 require('dotenv').config()
 
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use('/backend1/api/v1', routerNavigation)
 app.use('/backend1/api', express.static('src/uploads'))
+// app.use('/backend1/api', express.static(path.join(__dirname, '/uploads')))
 
 app.listen(port, () => {
   console.log(`Express app now listen on ${port}`)

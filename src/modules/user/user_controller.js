@@ -189,8 +189,8 @@ module.exports = {
         )
       }
     } catch (error) {
-      return helper.response(res, 400, 'Bad Request', error)
-      // console.log(error);
+      // return helper.response(res, 400, 'Bad Request', error)
+      console.log(error);
     }
   },
   deletedUSer: async (req, res) => {
@@ -238,6 +238,7 @@ module.exports = {
     }
   },
   updateUserLaporan: async (req, res) => {
+    console.log('req bodyay', req.body);
     try {
       const { id } = req.params
       let result = await userModel.getDataById(id)
@@ -250,7 +251,8 @@ module.exports = {
           userUnitKerja,
           usernoHP,
           userEmail,
-          userPasswordRegis
+          userPasswordRegis,
+          dropDownValRole
         } = req.body
         console.log('de', result[0].user_password)
         console.log('de', userPasswordRegis)
@@ -258,6 +260,7 @@ module.exports = {
         const salt = bcrypt.genSaltSync(10)
         const encryptPassword = bcrypt.hashSync(userPasswordRegis, salt)
         console.log('crypt pass', encryptPassword)
+
         const setData = {
           user_nip: userNIP,
           user_name: userNama,
@@ -265,10 +268,11 @@ module.exports = {
           user_unit_kerja: userUnitKerja,
           user_email: userEmail,
           user_phone_number: usernoHP,
-          user_password: userPasswordRegis === undefined ? result[0].user_password : encryptPassword,
+          user_password: userPasswordRegis === '' ? result[0].user_password : encryptPassword,
+          user_role: dropDownValRole,
           user_updated_at: new Date(Date.now())
         }
-
+        console.log('setsetdata', setData);
         result = await userModel.updateData(setData, id)
         return helper.response(res, 200, 'Succes Update Data', result)
       } else {
@@ -280,8 +284,8 @@ module.exports = {
         )
       }
     } catch (error) {
-      return helper.response(res, 400, 'Bad Request', error)
-      // console.log(error);
+      // return helper.response(res, 400, 'Bad Request', error)
+      console.log(error);
     }
   }
 }

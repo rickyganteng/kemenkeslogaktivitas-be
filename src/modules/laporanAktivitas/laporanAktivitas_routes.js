@@ -33,4 +33,8 @@ Route.delete(
   '/:id',
   userController.deletedLaporanAktivitas
 )
+Route.delete(
+  '/',
+  userController.deletedLaporanAktivitasAll
+)
 module.exports = Route

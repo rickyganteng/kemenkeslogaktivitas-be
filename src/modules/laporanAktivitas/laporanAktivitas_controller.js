@@ -67,7 +67,7 @@ module.exports = {
             user_name: item.user_name,
             user_nip: item.user_nip,
             user_pangkat: item.user_pangkat,
-            logaktivitas_isi: 'Belum mengisi data hari ini',
+            logaktivitas_isi: '--',
             logaktivitas_created_at: item.logaktivitas_created_at,
             logaktivitas_image: item.logaktivitas_image
           }
@@ -163,15 +163,15 @@ module.exports = {
         const setData2 = {
           logaktivitas_user_id: e,
           logaktivitas_isi: '--',
-          logaktivitas_image: ''
+          logaktivitas_image: null
         }
         // const resultlagi = await laporanAktivitasModel.createData(setData2)
         const result2 = await laporanAktivitasModel.createData(setData2)
         console.log('datasetdata 2', result2)
       }
     } catch (error) {
-      // return helper.response(res, 400, 'Bad Request', error)
-      console.log(error);
+      return helper.response(res, 400, 'Bad Request', error)
+      // console.log(error);
     }
   },
   postLaporanAktivitas: async (req, res) => {
@@ -275,6 +275,20 @@ module.exports = {
       }
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
+    }
+  },
+  deletedLaporanAktivitasAll: async (req, res) => {
+    try {
+      const result = await laporanAktivitasModel.deleteDataAll()
+
+      // if (result.length > 0) {
+      return helper.response(res, 200, 'Succes Delete Data All', result)
+      // } else {
+      // return helper.response(res, 404, 'Data not Found', null)
+      // }
+    } catch (error) {
+      return helper.response(res, 400, 'Bad Request', error)
+      // console.log(error);
     }
   },
   getAfterDataNow: async (req, res) => {

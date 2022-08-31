@@ -93,6 +93,16 @@ module.exports = {
       )
     })
   },
+  deleteDataAll: () => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'DELETE FROM logaktivitas',
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
   getAfterDataNow: () => {
     return new Promise((resolve, reject) => {
       connection.query(
